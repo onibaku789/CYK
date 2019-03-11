@@ -14,14 +14,14 @@ public:
     void test();
     CYKCLASS(){
         inputStream = "./default";
-        wordToFind = "aabbd"; //ez fix nem jó
+        wordToFind = "aabbaba";
         parseGrammar(inputStream);
         resultTable = createCYKTable();
         makeCYKTable(resultTable);
 
 
     }
-    CYKCLASS(std::string inputFileName, std::string word){
+    CYKCLASS(std::string  inputFileName, std::string  word){
         inputStream = inputFileName;
         wordToFind = word;
         parseGrammar(inputStream);
@@ -31,14 +31,15 @@ public:
 private:
     std::string wordToFind;
     std::string inputStream;
-    std::string startSymbole;
+    std::string startSymbol;
     std::vector<std::string> nonTerminals;
     std::vector<std::string> terminals;
     std::map<std::string,std::vector<std::string>> grammar;
     std::vector<std::vector<std::string>> resultTable;
-    void parseGrammar(std::string inputFileName);
+    void parseGrammar(std::string & inputFileName);
     std::vector<std::vector<std::string>>   createCYKTable();
     void makeCYKTable( std::vector<std::vector<std::string>>  & table);
+    std::vector<std::string> doProd(std::string a, std::string b);
 };
 
 
