@@ -56,7 +56,7 @@ void CYKCLASS::test() {
         }
         std::cout << std::endl;
     }
-
+    std::cout << "RESULTTABLE" << std::endl;
     for(const auto & vec:resultTable){
         for(const auto & i:vec){
             std::cout << i << " ";
