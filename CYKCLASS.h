@@ -7,24 +7,24 @@
 
 #include <vector>
 #include <string>
-
 #include <map>
+
 class CYKCLASS {
 public:
     void test();
+
     CYKCLASS(){
         inputStream = "./default";
         wordToFind = "aabbaba";
-        parseGrammar(inputStream);
-        resultTable = createCYKTable();
-        makeCYKTable(resultTable);
+        doTheMath();
 
 
     }
     CYKCLASS(std::string  inputFileName, std::string  word){
         inputStream = inputFileName;
         wordToFind = word;
-        parseGrammar(inputStream);
+        doTheMath();
+
 
     }
 
@@ -35,11 +35,16 @@ private:
     std::vector<std::string> nonTerminals;
     std::vector<std::string> terminals;
     std::map<std::string,std::vector<std::string>> grammar;
-    std::vector<std::vector<std::string>> resultTable;
+    std::vector<std::vector<std::vector<std::string>>> resultTable;
     void parseGrammar(std::string & inputFileName);
-    std::vector<std::vector<std::string>>   createCYKTable();
-    void makeCYKTable( std::vector<std::vector<std::string>>  & table);
-    std::vector<std::string> doProd(std::string a, std::string b);
+    std::vector<std::vector<std::vector<std::string>>>   createCYKTable();
+    void makeCYKTable( std::vector<std::vector<std::vector<std::string>>>  & table);
+    std::vector<std::string> doProdVec(std::vector<std::string> prodStringsA, std::vector<std::string>prodStringsB);
+    std::string doProd(std::string a);
+    std::vector<std::string> doProdVec(std::string a);
+    std::vector<std::string> doProdVec(std::vector<std::string> & a);
+
+    void doTheMath();
 };
 
 
