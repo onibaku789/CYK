@@ -14,14 +14,15 @@ class CYKCLASS {
 public:
     void test();
 
-    CYKCLASS(){
+    CYKCLASS() {
         inputStream = "./default";
         wordToFind = "aabbaba";
         doTheMath();
 
 
     }
-    CYKCLASS(std::string  inputFileName, std::string  word){
+
+    CYKCLASS(std::string inputFileName, std::string word) {
         inputStream = inputFileName;
         wordToFind = word;
         doTheMath();
@@ -35,17 +36,24 @@ private:
     std::string startSymbol;
     std::vector<std::string> nonTerminals;
     std::vector<std::string> terminals;
-    std::map<std::string,std::vector<std::string>> grammar;
+    std::map<std::string, std::vector<std::string>> grammar;
     std::vector<std::vector<std::vector<std::string>>> resultTable;
-    void parseGrammar(std::string & inputFileName);
-    std::vector<std::vector<std::vector<std::string>>>   createCYKTable();
-    void makeCYKTable( std::vector<std::vector<std::vector<std::string>>>  & table);
-    std::vector<std::string> doProdVec(std::vector<std::string> prodStringsA, std::vector<std::string>prodStringsB);
-    std::string doProd(std::string a);
-    std::vector<std::string> doProdVec(std::string a);
-    std::vector<std::string> doProdVec(std::vector<std::string> & a);
 
-    int counter = 1;
+    void parseGrammar(std::string &inputFileName);
+
+    std::vector<std::vector<std::vector<std::string>>> createCYKTable();
+
+    void makeCYKTable(std::vector<std::vector<std::vector<std::string>>> &table);
+
+    std::vector<std::string> doProdVec(std::vector<std::string> prodStringsA, std::vector<std::string> prodStringsB);
+
+    std::string doProd(std::string a);
+
+    std::vector<std::string> doProdVec(std::string a);
+
+    std::vector<std::string> doProdVec(std::vector<std::string> &a);
+
+
     void doTheMath();
 
     using Vec3 = std::vector<std::vector<std::vector<std::string>>>;

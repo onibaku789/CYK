@@ -73,9 +73,9 @@ void CYKCLASS::test() {
     }
 }
 
-std::vector<std::vector<std::vector<std::string>>> CYKCLASS::createCYKTable() {
+Vec3 CYKCLASS::createCYKTable() {
     long length = wordToFind.length();
-    std::vector<std::vector<std::vector<std::string>>> cykTable;
+    Vec3 cykTable;
     cykTable.clear();
     std::vector<std::string> kappa;
     std::string test = "-";
@@ -102,7 +102,7 @@ std::vector<std::vector<std::vector<std::string>>> CYKCLASS::createCYKTable() {
     return cykTable;
 }
 
-void CYKCLASS::makeCYKTable(std::vector<std::vector<std::vector<std::string>>> &table) {
+void CYKCLASS::makeCYKTable(Vec3 &table) {
 
     for (int i = 0; i < wordToFind.length(); i++) {
         std::string tempString;
@@ -164,7 +164,6 @@ CYKCLASS::doProdVec(std::vector<std::string> prodStringsA, std::vector<std::stri
                 for (const auto &i:map.second) {
                     if (tempString == i) {
                         found = true;
-                        //  std::cout << counter++ << ". TALÁLAT: " << tempString << " BEÍROM: " << map.first << std::endl;
                         resultVector.push_back(map.first);
                     }
                 }
@@ -172,7 +171,7 @@ CYKCLASS::doProdVec(std::vector<std::string> prodStringsA, std::vector<std::stri
             }
         }
     }
-    // std::cout << "kosz" << std::endl;
+
 
     if (!found)
         resultVector.push_back("-");
