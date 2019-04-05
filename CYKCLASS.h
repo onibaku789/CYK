@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <algorithm>
 
 class CYKCLASS {
 public:
@@ -44,7 +45,14 @@ private:
     std::vector<std::string> doProdVec(std::string a);
     std::vector<std::string> doProdVec(std::vector<std::string> & a);
 
+    int counter = 1;
     void doTheMath();
+
+    using Vec3 = std::vector<std::vector<std::vector<std::string>>>;
+
+    void viewCYKTable(Vec3);
+
+    const bool Contains(std::vector<std::string> &Vec, const std::string &Element);
 };
 
 
