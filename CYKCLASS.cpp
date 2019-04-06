@@ -10,6 +10,7 @@
 using Vec3 = std::vector<std::vector<std::vector<std::string>>>;
 
 void CYKCLASS::parseGrammar(std::string &inputFileName) {
+
     std::ifstream inputStream(inputFileName);
     std::string line, tempString, prod;
 
@@ -38,6 +39,7 @@ void CYKCLASS::parseGrammar(std::string &inputFileName) {
             grammar[prod].emplace_back(tempString);
         }
     }
+    inputStream.close();
 }
 
 void CYKCLASS::test() {
@@ -76,6 +78,7 @@ void CYKCLASS::test() {
 Vec3 CYKCLASS::createCYKTable() {
     long length = wordToFind.length();
     Vec3 cykTable;
+
     cykTable.clear();
     std::vector<std::string> kappa;
     std::string test = "-";
@@ -102,7 +105,7 @@ Vec3 CYKCLASS::createCYKTable() {
     return cykTable;
 }
 
-void CYKCLASS::makeCYKTable(Vec3 &table) {
+Vec3 CYKCLASS::makeCYKTable(Vec3 &table) {
 
     for (int i = 0; i < wordToFind.length(); i++) {
         std::string tempString;
@@ -119,14 +122,20 @@ void CYKCLASS::makeCYKTable(Vec3 &table) {
         table[1][i] = doProdVec(tempString);
 
     }
-
+    if (wordToFind.size() == 1)
+        return table;
 
     for (int i = 0; i < wordToFind.length(); i++) {
+        std::vector<std::string> temp;
         if (i + 1 <= wordToFind.length())
-            table[2][i] = doProdVec(table[1][i], table[1][i + 1]);
+            temp = doProdVec(table[1][i], table[1][i + 1]);
+        if (!temp.empty())
+            table[2][i] = temp;
 
     }
 
+    if (wordToFind.size() == 2)
+        return table;
 
     std::vector<std::string> temp;
     for (int i = 3; i < table.size(); i++) {
@@ -135,35 +144,33 @@ void CYKCLASS::makeCYKTable(Vec3 &table) {
             for (int compareFrom = 1; compareFrom < i; compareFrom++) {
                 std::vector<std::string> temp2;
                 temp2 = doProdVec(table[compareFrom][j], table[i - compareFrom][j + compareFrom]);
-                //NEM JÓ CSAK MŰKÖDIK EKSDE
-                //TODO
-                if (!Contains(temp2, "-"))
-                    temp.insert(temp.end(), temp2.begin(), temp2.end());
+                temp.insert(temp.end(), temp2.begin(), temp2.end());
 
 
             }
+            if (!temp.empty())
+                table[i][j] = temp;
 
-            table[i][j] = temp;
         }
 
     }
-
+    return table;
 }
 
 std::vector<std::string>
-CYKCLASS::doProdVec(std::vector<std::string> prodStringsA, std::vector<std::string> prodStringsB) {
+CYKCLASS::doProdVec(const std::vector<std::string> &prodStringsA, const std::vector<std::string> &prodStringsB) {
     std::vector<std::string> resultVector;
     std::string tempString;
-    bool found = false;
 
-    for (int j = 0; j < prodStringsA.size(); ++j) {
-        for (int ii = 0; ii < prodStringsB.size(); ++ii) {
-            tempString = prodStringsA[j] + prodStringsB[ii];
 
-            for (auto map:grammar) {
+    for (const auto &j : prodStringsA) {
+        for (const auto &ii : prodStringsB) {
+            tempString = j + ii;
+
+            for (const auto &map:grammar) {
                 for (const auto &i:map.second) {
                     if (tempString == i) {
-                        found = true;
+
                         resultVector.push_back(map.first);
                     }
                 }
@@ -173,51 +180,15 @@ CYKCLASS::doProdVec(std::vector<std::string> prodStringsA, std::vector<std::stri
     }
 
 
-    if (!found)
-        resultVector.push_back("-");
-
-
     return resultVector;
 }
 
 
-std::string CYKCLASS::doProd(std::string a) {
-
-
-    for (auto map:grammar) {
-        for (const auto &i:map.second) {
-            if (i == a) {
-                return map.first;
-            }
-        }
-    }
-
-    return "-";
-
-}
-
-std::vector<std::string> CYKCLASS::doProdVec(std::vector<std::string> &a) {
+std::vector<std::string> CYKCLASS::doProdVec(const std::string &a) {
     std::vector<std::string> tempStrings;
 
-    for (auto map:grammar) {
+    for (const auto &map:grammar) {
         for (const auto &i:map.second) {
-            for (auto vec:a) {
-                if (vec == i)
-                    tempStrings.push_back(map.first);
-
-            }
-        }
-    }
-
-    return tempStrings;
-
-}
-
-std::vector<std::string> CYKCLASS::doProdVec(std::string a) {
-    std::vector<std::string> tempStrings;
-
-    for (auto map:grammar) {
-        for (auto i:map.second) {
             if (i == a)
                 tempStrings.push_back(map.first);
 
@@ -232,7 +203,8 @@ std::vector<std::string> CYKCLASS::doProdVec(std::string a) {
 void CYKCLASS::doTheMath() {
     parseGrammar(inputStream);
     resultTable = createCYKTable();
-    makeCYKTable(resultTable);
+    resultTable = makeCYKTable(resultTable);
+
 }
 
 
@@ -243,6 +215,28 @@ const bool CYKCLASS::Contains(std::vector<std::string> &Vec, const std::string &
     return false;
 }
 
-void CYKCLASS::viewCYKTable(CYKCLASS::Vec3) {
-    //TODO
+void CYKCLASS::viewCYKTable() {
+    for (int i = static_cast<int>(resultTable.size() - 1); i >= 0; i--) {
+        for (auto &j : resultTable[i]) {
+            for (int k = 0; k < j.size(); ++k) {
+                std::cout << j[k];
+                if (j.size() > 1)
+                    std::cout << ",";
+            }
+
+            std::cout << " ";
+        }
+        std::cout << std::endl;
+    }
+    if (isWord())
+        std::cout << wordToFind << " szó levezethető a nyelvtanból" << std::endl;
+    else
+        std::cout << wordToFind << " szó nem levezethető a nyelvtanból" << std::endl;
+
+}
+
+const bool CYKCLASS::isWord() {
+
+    return Contains(resultTable[resultTable.size() - 1][0], startSymbol);
+
 }
