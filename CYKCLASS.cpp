@@ -148,6 +148,8 @@ Vec3 CYKCLASS::makeCYKTable(Vec3 &table) {
 
 
             }
+            std::sort(temp.begin(), temp.end());
+            temp.erase(std::unique(temp.begin(), temp.end()), temp.end());
             if (!temp.empty())
                 table[i][j] = temp;
 
@@ -209,13 +211,11 @@ void CYKCLASS::doTheMath() {
 
 
 const bool CYKCLASS::Contains(std::vector<std::string> &Vec, const std::string &Element) {
-    if (std::find(Vec.begin(), Vec.end(), Element) != Vec.end())
-        return true;
-
-    return false;
+    return std::find(Vec.begin(), Vec.end(), Element) != Vec.end();
 }
 
 void CYKCLASS::viewCYKTable() {
+
     for (int i = static_cast<int>(resultTable.size() - 1); i >= 0; i--) {
         for (auto &j : resultTable[i]) {
             for (int k = 0; k < j.size(); ++k) {
@@ -231,7 +231,8 @@ void CYKCLASS::viewCYKTable() {
     if (isWord())
         std::cout << wordToFind << " szó levezethető a nyelvtanból" << std::endl;
     else
-        std::cout << wordToFind << " szó nem levezethető a nyelvtanból" << std::endl;
+        std::cout << wordToFind << " szó nem vezethető le a nyelvtanból" << std::endl;
+    std::cout << std::endl;
 
 }
 

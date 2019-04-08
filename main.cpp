@@ -17,13 +17,16 @@ int main(int argc, char *argv[]) {
     }
 
 
-    CYKCLASS CYK3("/home/attilav/Programozas/Fordito/CYK/default", "aabbaaaba");
+    CYKCLASS CYK3("/home/attilav/Programozas/Fordito/CYK/pet_rules", "fxey((P(x)iQ(y))dR(z))");
 
     CYK3.viewCYKTable();
 
     CYKCLASS CYK4("/home/attilav/Programozas/Fordito/CYK/default", "aabbaaaaaaaba");
 
     CYK4.viewCYKTable();
+
+    CYKCLASS asd;
+    asd.viewCYKTable();
 
     return 0;
 }
