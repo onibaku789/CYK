@@ -118,16 +118,18 @@ Vec3 CYKCLASS::makeCYKTable(Vec3 &table) {
     for (int i = 0; i < wordToFind.length(); i++) {
         std::string tempString;
         tempString.push_back(wordToFind[i]);
-
-        table[1][i] = doProdVec(tempString);
+        std::vector<std::string> tempVec;
+        tempVec = doProdVec(tempString);
+        if (!tempVec.empty())
+            table[1][i] = tempVec;
 
     }
     if (wordToFind.size() == 1)
         return table;
 
-    for (int i = 0; i < wordToFind.length(); i++) {
+    for (int i = 0; i < table[1].size() - 1; i++) {
         std::vector<std::string> temp;
-        if (i + 1 <= wordToFind.length())
+
             temp = doProdVec(table[1][i], table[1][i + 1]);
         if (!temp.empty())
             table[2][i] = temp;
@@ -143,11 +145,13 @@ Vec3 CYKCLASS::makeCYKTable(Vec3 &table) {
             temp.clear();
             for (int compareFrom = 1; compareFrom < i; compareFrom++) {
                 std::vector<std::string> temp2;
+
                 temp2 = doProdVec(table[compareFrom][j], table[i - compareFrom][j + compareFrom]);
                 temp.insert(temp.end(), temp2.begin(), temp2.end());
 
 
             }
+
             std::sort(temp.begin(), temp.end());
             temp.erase(std::unique(temp.begin(), temp.end()), temp.end());
             if (!temp.empty())

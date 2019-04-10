@@ -7,12 +7,13 @@ int main(int argc, char *argv[]) {
     if (argc > 1) {
         if (argc < 2)
             std::cout << "Usage: ./a.out <grammarfile> <word>" << std::endl;
-        std::string file, word;
-        file = argv[1];
-        word = argv[2];
-        CYKCLASS CYK2(file, word);
-        CYK2.viewCYKTable();
-
+        else {
+            std::string file, word;
+            file = argv[1];
+            word = argv[2];
+            CYKCLASS CYK2(file, word);
+            CYK2.viewCYKTable();
+        }
 
     }
 
@@ -26,6 +27,7 @@ int main(int argc, char *argv[]) {
     CYK4.viewCYKTable();
 
     CYKCLASS asd;
+
     asd.viewCYKTable();
 
     return 0;

@@ -12,6 +12,7 @@
 #include <algorithm>
 
 using Vec3 = std::vector<std::vector<std::vector<std::string>>>;
+
 class CYKCLASS {
 public:
     void test();
