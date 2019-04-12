@@ -13,30 +13,24 @@
 
 using Vec3 = std::vector<std::vector<std::vector<std::string>>>;
 
+
 class CYKCLASS {
 public:
     void test();
 
-    void viewCYKTable();
 
-    CYKCLASS() {
-        inputStream = "./default";
-        wordToFind = "aabbaba";
-        doTheMath();
+    static CYKCLASS *getInstance();
 
+    void setFileWord(std::string file, std::string word);
 
-    }
-
-    CYKCLASS(std::string inputFileName, std::string word) {
-        inputStream = std::move(inputFileName);
-        wordToFind = std::move(word);
-        doTheMath();
-
-
-    }
-
+    void doTheMath();
 
 private:
+
+    static CYKCLASS *instance;
+
+    CYKCLASS() = default;
+
     std::string wordToFind;
     std::string inputStream;
     std::string startSymbol;
@@ -58,8 +52,8 @@ private:
 
     std::vector<std::string> doProdVec(const std::string &a);
 
+    void viewCYKTable();
 
-    void doTheMath();
 
     static const bool Contains(std::vector<std::string> &Vec, const std::string &Element);
 

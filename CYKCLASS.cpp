@@ -9,6 +9,17 @@
 
 using Vec3 = std::vector<std::vector<std::vector<std::string>>>;
 
+
+CYKCLASS *CYKCLASS::instance = nullptr;
+
+CYKCLASS *CYKCLASS::getInstance() {
+    if (instance == nullptr) {
+        instance = new CYKCLASS();
+    }
+
+    return instance;
+}
+
 void CYKCLASS::parseGrammar(std::string &inputFileName) {
 
     std::ifstream inputStream(inputFileName);
@@ -20,18 +31,18 @@ void CYKCLASS::parseGrammar(std::string &inputFileName) {
 
     getline(inputStream, line);
     std::istringstream iss(line);
-
+    nonTerminals.clear();
     while (iss >> tempString) {
         nonTerminals.emplace_back(tempString);
     }
 
     getline(inputStream, line);
     std::istringstream iss2(line);
-
+    terminals.clear();
     while (iss2 >> tempString) {
         terminals.emplace_back(tempString);
     }
-
+    grammar.clear();
     while (getline(inputStream, line)) {
         std::istringstream iss3(line);
         iss3 >> prod;
@@ -110,7 +121,9 @@ Vec3 CYKCLASS::makeCYKTable(Vec3 &table) {
     for (int i = 0; i < wordToFind.length(); i++) {
         std::string tempString;
         tempString.push_back(wordToFind[i]);
+
         std::vector<std::string> tempVec;
+        tempVec.clear();
         tempVec.push_back(tempString);
         table[0][i] = tempVec;
     }
@@ -119,6 +132,7 @@ Vec3 CYKCLASS::makeCYKTable(Vec3 &table) {
         std::string tempString;
         tempString.push_back(wordToFind[i]);
         std::vector<std::string> tempVec;
+        tempVec.clear();
         tempVec = doProdVec(tempString);
         if (!tempVec.empty())
             table[1][i] = tempVec;
@@ -130,7 +144,7 @@ Vec3 CYKCLASS::makeCYKTable(Vec3 &table) {
     for (int i = 0; i < table[1].size() - 1; i++) {
         std::vector<std::string> temp;
 
-            temp = doProdVec(table[1][i], table[1][i + 1]);
+        temp = doProdVec(table[1][i], table[1][i + 1]);
         if (!temp.empty())
             table[2][i] = temp;
 
@@ -210,6 +224,7 @@ void CYKCLASS::doTheMath() {
     parseGrammar(inputStream);
     resultTable = createCYKTable();
     resultTable = makeCYKTable(resultTable);
+    viewCYKTable();
 
 }
 
@@ -243,5 +258,11 @@ void CYKCLASS::viewCYKTable() {
 const bool CYKCLASS::isWord() {
 
     return Contains(resultTable[resultTable.size() - 1][0], startSymbol);
+
+}
+
+void CYKCLASS::setFileWord(std::string file, std::string word) {
+    instance->inputStream = std::move(file);
+    instance->wordToFind = std::move(word);
 
 }
