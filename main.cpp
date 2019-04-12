@@ -18,11 +18,11 @@ int main(int argc, char *argv[]) {
     }
 
 
-    CYK->setFileWord("/home/attilav/Programozas/Fordito/CYK/pet_rules", "fxey((P(x)iQ(y))dR(z))");
+    CYK->setFileWord("./pet_rules", "fxey((P(x)iQ(y))dR(z))");
 
     CYK->doTheMath();
 
-    CYK->setFileWord("/home/attilav/Programozas/Fordito/CYK/default", "aabbaaaaaaaba");
+    CYK->setFileWord("./default", "aabbaaaaaaaba");
 
     CYK->doTheMath();
 
